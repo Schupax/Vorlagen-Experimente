@@ -7,12 +7,14 @@ import de.schupax.experimente.Wuerfelzerfallsexperiment;
 
 @SuppressWarnings("rawtypes")
 public enum EExperimente {
-	ZERFALL_MIT_WUERFELN("Würfelexperiment - Zerfallsgesetzt", Arrays.asList(EParameterExperimente.GRUPPENANZAHL,
-			EParameterExperimente.EIN_SHEET_PRO_GRUPPE),Wuerfelzerfallsexperiment.class);
+	ZERFALL_MIT_WUERFELN("Würfelexperiment - Zerfallsgesetzt",
+			Arrays.asList(EParameterExperimente.GRUPPENANZAHL, EParameterExperimente.EIN_SHEET_PRO_GRUPPE,
+					EParameterExperimente.REIHEN_PRO_GRUPPE, EParameterExperimente.WUERFE_PRO_REIHE),
+			Wuerfelzerfallsexperiment.class);
 
 	private final String _beschreibung;
 	private final List<EParameterExperimente> _parameters;
-	
+
 	private final Class _experiment;
 
 	private EExperimente(String pBeschreibung, List<EParameterExperimente> pParameters, Class pExperiment) {

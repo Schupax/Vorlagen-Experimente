@@ -1,0 +1,17 @@
+de\schupax\experimente\IExperiment.class
+de\schupax\aufgabenblatt\EParameter.class
+de\schupax\start\ConsoleStart.class
+de\schupax\Constants.class
+de\schupax\start\parameters\EParameterTypes.class
+de\schupax\start\parameters\EOutputParameters.class
+de\schupax\aufgabenblatt\AufgabenblattCreator.class
+de\schupax\experimente\ExperimentFactory.class
+de\schupax\experimentede\models\MReihe.class
+de\schupax\experimente\Wuerfelzerfallsexperiment.class
+de\schupax\exceptions\NoFilenameException.class
+de\schupax\experimente\ExperimentFactory$1.class
+de\schupax\start\parameters\EParameterExperimente.class
+de\schupax\experimentede\models\MDiagramm.class
+de\schupax\start\ParameterController.class
+de\schupax\start\parameters\EExperimente.class
+de\schupax\aufgabenblatt\ParameterValuePair.class

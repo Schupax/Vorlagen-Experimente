@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import de.schupax.Constants;
 import de.schupax.experimentede.models.MDiagramm;
 import de.schupax.experimentede.models.MReihe;
 
@@ -50,11 +51,12 @@ public class Wuerfelzerfallsexperiment implements IExperiment {
 
 				XSSFSheet sheet = _workbook.createSheet("Gruppe" + i);
 				gruppenSheets.add(sheet);
-				einfuegenVonWuerfenUndHeadern("Protokoll für Gruppe " + i, sheet, _workbook);
+				einfuegenVonWuerfenUndHeadern("Protokoll f" + Constants.cUe + "r Gruppe " + i, sheet, _workbook);
 				// Header der Reihen anlegen
 				for (MReihe reihe : _reihenProGruppe) {
 					Cell ReiheHeader = _tableHeader.createCell(reihe.getNummer() + 1);
-					ReiheHeader.setCellValue("Reihe " + reihe.getNummer() + ", " + reihe.getWurfanzahl() + " Würfel");
+					ReiheHeader.setCellValue("Reihe " + reihe.getNummer() + ", " + reihe.getWurfanzahl() + " W"
+							+ Constants.cUe + "rfel");
 					ReiheHeader.setCellStyle(_headerStyle);
 					sheet.setColumnWidth(reihe.getNummer() + 1, 4000);
 				}
@@ -62,8 +64,8 @@ public class Wuerfelzerfallsexperiment implements IExperiment {
 				// Gruppendiagramm
 				MDiagramm diagramm = new MDiagramm(sheet, 7, 4, 21, 26);
 				diagramm.setTitle("Zerfallsgesetz");
-				diagramm.setBottomAxisTitle("Würfe");
-				diagramm.setLeftAxisTitle("übrige Würfel");
+				diagramm.setBottomAxisTitle("W" + Constants.cUe + "rfe");
+				diagramm.setLeftAxisTitle(Constants.cUe + "brige W" + Constants.cUe + "rfel");
 				diagramm.setLines(3, 3 + _wuerfe, 1, 1);
 				for (MReihe reihe : _reihenProGruppe) {
 					diagramm.addData(3, +_wuerfe, 1 + reihe.getNummer(), 1 + reihe.getNummer(),
@@ -97,14 +99,14 @@ public class Wuerfelzerfallsexperiment implements IExperiment {
 		wurfcell.setCellValue("Wurf");
 		wurfcell.setCellStyle(_headerStyle);
 
-		// Nummerierung der Würfe
+		// Nummerierung der WÃ¼rfe
 		for (int j = 1; j <= _wuerfe; j++) {
 			Row rowWurf = pSheet.createRow(3 + j);
 			Cell cellWurfNummer = rowWurf.createCell(1);
 			cellWurfNummer.setCellValue(j);
 			cellWurfNummer.setCellStyle(_headerStyle);
 		}
-		// 0ten Wurf Anzahl der Würfel
+		// 0ten Wurf Anzahl der Wï¿½rfel
 		Row rowWurfZero = pSheet.createRow(2 + 1);
 		Cell cellWurfNummerZero = rowWurfZero.createCell(1);
 		cellWurfNummerZero.setCellValue(0);
@@ -127,8 +129,8 @@ public class Wuerfelzerfallsexperiment implements IExperiment {
 		for (MReihe reihe : _reihenProGruppe) {
 			// Header der Reihen anlegen
 			Cell ReiheHeader = _tableHeader.createCell(reihe.getNummer() + 1);
-			ReiheHeader
-					.setCellValue("Reihe " + reihe.getNummer() + ", " + reihe.getWurfanzahl() + " Würfel Mittelwert");
+			ReiheHeader.setCellValue("Reihe " + reihe.getNummer() + ", " + reihe.getWurfanzahl() + " W" + Constants.cUe
+					+ "rfel Mittelwert");
 			ReiheHeader.setCellStyle(_headerStyle);
 			sheet.setColumnWidth(reihe.getNummer() + 1, 4000);
 
@@ -137,11 +139,11 @@ public class Wuerfelzerfallsexperiment implements IExperiment {
 			int startRow = y + reihenCounter * y_offset + reihenCounter;
 			int endCol = x + x_offset;
 			int endRow = y + (reihenCounter + 1) * y_offset + reihenCounter;
-			System.err.println(startCol + " " + startRow + " " + endCol + " " + endRow);
 			MDiagramm diagramm = new MDiagramm(sheet, startCol, startRow, endCol, endRow);
-			diagramm.setTitle("Zerfallsgesetz für " + reihe.getWurfanzahl() + " Würfe");
-			diagramm.setBottomAxisTitle("Würfe");
-			diagramm.setLeftAxisTitle("übrige Würfel");
+			diagramm.setTitle(
+					"Zerfallsgesetz f" + Constants.cUe + "r " + reihe.getWurfanzahl() + " W" + Constants.cUe + "rfe");
+			diagramm.setBottomAxisTitle("W" + Constants.cUe + "rfe");
+			diagramm.setLeftAxisTitle(Constants.cUe + "brige W" + Constants.cUe + "rfel");
 			diagramm.setLines(3, 3 + _wuerfe, 1, 1);
 			int gruppenNummer = 1;
 			for (XSSFSheet gruppenSheet : pGruppenSheets) {

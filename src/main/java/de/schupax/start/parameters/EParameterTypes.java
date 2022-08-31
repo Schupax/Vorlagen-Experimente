@@ -1,10 +1,12 @@
 package de.schupax.start.parameters;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum EParameterTypes {
-	GANZZAHL(Pattern.compile("[0-9]*")), TEXT(Pattern.compile(".*",Pattern.DOTALL)), YN(Pattern.compile("[yn]")), REIHEN_WUERFEL_ANZAHL(
-			Pattern.compile("1\\.[1-9][0-9](,2\\.[1-9][0-9](,3\\.[1-9][0-9](,4\\.[1-9][0-9](,5\\.[1-9][0-9])?)?)?)?"));
+	GANZZAHL(Pattern.compile("[0-9]*")), TEXT(Pattern.compile(".*", Pattern.DOTALL)), YN(Pattern.compile("[yn]")),
+	REIHEN_WUERFEL_ANZAHL(
+			Pattern.compile("[1-9][0-9]*(,[1-9][0-9]*)*"));
 
 	private final Pattern _pattern;
 
@@ -14,5 +16,10 @@ public enum EParameterTypes {
 
 	public Pattern getPattern() {
 		return _pattern;
+	}
+
+	public Boolean matchesValue(String pValue) {
+		Matcher m = _pattern.matcher(pValue);
+		return m.matches();
 	}
 }

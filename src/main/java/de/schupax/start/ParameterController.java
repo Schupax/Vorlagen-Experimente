@@ -3,9 +3,12 @@ package de.schupax.start;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.math3.util.Pair;
 
 import de.schupax.Constants;
-import de.schupax.experimente.IExperiment;
 import de.schupax.start.parameters.EExperimente;
 import de.schupax.start.parameters.EOutputParameters;
 import de.schupax.start.parameters.EParameterExperimente;
@@ -69,7 +72,7 @@ public class ParameterController {
 		}
 		return false;
 	}
-	
+
 	private String getArgument(String pArgument) {
 		for (int i = 0; i < _arguments.length; i++) {
 			if (_arguments[i].startsWith(pArgument)) {
@@ -93,29 +96,62 @@ public class ParameterController {
 	public void printHelp() {
 		System.out.println(Constants.cParameterHinweisHelp);
 		String helpValue = getArgumentValue(getArgument(Constants.cParameterHelp));
-		for (EOutputParameters outputParameter : EOutputParameters.values()) {
-			System.out.println(outputParameter.name().toLowerCase() + " - " + outputParameter.getHinweis());
-		}
+		System.out.println(" - " + Constants.cParameterHelp + " - " + "Schreibt diese Hilfe.");
 		for (EExperimente experimente : EExperimente.values()) {
-			System.out.println(Constants.cParameterHelp + Constants.cEquals + experimente.name().toLowerCase() + " - "
-					+ Constants.cHilfeZumExperiment + experimente.getBeschreibung());
+			System.out.println(" - " + Constants.cParameterHelp + Constants.cEquals + experimente.name().toLowerCase()
+					+ " - " + Constants.cHilfeZumExperiment + experimente.getBeschreibung());
 		}
+		for (EOutputParameters outputParameter : EOutputParameters.values()) {
+			System.out.println(" - " + outputParameter.name().toLowerCase() + " - " + outputParameter.getHinweis());
+		}
+		String experiments = "";
+		boolean first = true;
+		for (EExperimente eExperimente : EExperimente.values()) {
+			if (first == true) {
+				first = false;
+			} else {
+				experiments += ",";
+			}
+			experiments += eExperimente.name().toLowerCase();
+		}
+		System.out.println(" - " + Constants.cParameterExperiment + " - Werte: " + experiments);
 		if (helpValue != null) {
 			try {
-			EExperimente experiment = EExperimente.valueOf(helpValue.toUpperCase());
-			if (experiment != null) {
-				System.out.println(Constants.cHilfeZumExperiment + experiment.getBeschreibung());
-				for (EParameterExperimente parameterExperimente : experiment.getParameters()) {
-					System.out.println(parameterExperimente.name().toLowerCase() + " - " + parameterExperimente.getBeschreibung());
+				EExperimente experiment = EExperimente.valueOf(helpValue.toUpperCase());
+				if (experiment != null) {
+					System.out.println(Constants.cHilfeZumExperiment + experiment.getBeschreibung());
+					for (EParameterExperimente parameterExperimente : experiment.getParameters()) {
+						System.out.println(" - " + parameterExperimente.name().toLowerCase() + " - "
+								+ parameterExperimente.getBeschreibung());
+					}
 				}
-			}
-			}catch(IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public IExperiment getExperiment() {
+	public EExperimente getExperiment() {
+		if (gotArgument(Constants.cParameterExperiment)) {
+			String value = getArgumentValue(getArgument(Constants.cParameterExperiment));
+			return EExperimente.valueOf(value.toUpperCase());
+		}
 		return null;
+	}
+
+	public List<Pair<EParameterExperimente, String>> getExperimentParametersAndValues() throws Exception {
+		List<Pair<EParameterExperimente, String>> result = new ArrayList<Pair<EParameterExperimente, String>>();
+		for (EParameterExperimente parameter : EParameterExperimente.values()) {
+			if (gotArgument(parameter.name().toLowerCase())) {
+				String value = getArgumentValue(getArgument(parameter.name().toLowerCase()));
+				if (parameter.getType().matchesValue(value)) {
+					result.add(new Pair<EParameterExperimente, String>(parameter, value));
+				} else {
+					throw new Exception(
+							"Der Wert: " + value + "passt nicht zum Parameter: " + parameter.name().toLowerCase());
+				}
+			}
+		}
+		return result;
 	}
 }
